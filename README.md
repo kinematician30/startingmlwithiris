@@ -4,4 +4,12 @@
 
 The goal of this project is to build a Machine Learning model using the `iris` dataset, which predicts the iris flower type based on the `sepal.length` , `sepal.width` , `petal.width` and `petal.length`.
 
-## Our Machine Learning Process🦾:
+## Our Machine Learning Process goes through🦾:
+
+-   Data Collection.
+
+-   Data Preparation and Exploration.
+
+-   Model Building.
+
+-   Model Evaluation.

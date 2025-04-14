@@ -25,3 +25,62 @@ skim(irs)
 ```{r}
 names(irs)
 ```
+
+### Column Names Transformation
+
+```{r}
+# built a function for column names transformation
+col_names_transformation <- function(x){
+   new_names = names(x)
+   new_names = gsub("\\.", "", new_names)
+   new_names = gsub("L", "Length", new_names)
+   new_names = gsub("W", "Width", new_names)
+   
+   names(x) = new_names
+   return(x)
+}
+
+irs_upt <- col_names_transformation(irs)
+```
+
+```{r}
+skim(irs_upt)
+```
+
+## Quick Analysis
+
+```{r}
+# Correlation between sepal length and width of each species.
+
+# for setosa
+setosa_cor <- cor(irs_upt$SepalLengthSetosa, irs_upt$SepalWidthSetosa)
+
+# for veriscolor 
+veriscolor_cor <- cor(irs_upt$SepalLengthVersicolor, irs_upt$SepalWidthVersicolor)
+
+# for virginica
+virginica_cor <- cor(irs_upt$SepalLengthVirginica, irs_upt$SepalWidthVirginica)
+
+cor_values <- c(setosa = setosa_cor,
+                veriscolor = veriscolor_cor,
+                virginica = virginica_cor)
+
+print(cor_values)
+```
+
+```{r}
+# Visual Representation
+plot(irs_upt$SepalLengthSetosa, irs_upt$SepalWidthSetosa, main = "Relationship betwen sepal length and  width of the setosa species", xlab = "Sepal Length", ylab = "Sepal Width", pch = 20, col = "blue")
+```
+
+#### Number Distribution of each species
+
+```{r}
+col_hist <- function(col){
+   colors = sample(c("blue", "red", "yellow", "green","brown", "orange"), replace = TRUE, size = 1)
+   
+   return(hist(col, col = colors))
+}
+
+sapply(irs_upt, col_hist)
+```
