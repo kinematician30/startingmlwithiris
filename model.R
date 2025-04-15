@@ -20,7 +20,7 @@ col_names_transformation <- function(x){
 irs <- col_names_transformation(irs)
 
 # To achieve reproducible model; set the random seed number
-set.seed(100)
+set.seed(189)
 
 # Performs stratified random split of the data set
 TrainingIndex <- createDataPartition(irs$Species, p=0.8, list = FALSE)
