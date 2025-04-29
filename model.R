@@ -64,9 +64,57 @@ Model.training.confusion <-confusionMatrix(Model.training, TrainingSet$Species)
 Model.testing.confusion <-confusionMatrix(Model.testing, TestingSet$Species)
 Model.cv.confusion <-confusionMatrix(Model.cv, TrainingSet$Species)
 
+
 print(Model.training.confusion)
 print(Model.testing.confusion)
 print(Model.cv.confusion)
+
+# Calculate additional metrics: Accuracy, Precision, Recall, F1 Score
+calculate_metrics <- function(conf_matrix) {
+   accuracy <- conf_matrix$overall["Accuracy"]
+   precision <- mean(conf_matrix$byClass[, "Precision"])
+   recall <- mean(conf_matrix$byClass[, "Recall"])
+   f1_score <- 2 * (precision * recall) / (precision + recall)
+   
+   metrics <- data.frame(
+      Metric = c("Accuracy", "Precision", "Recall", "F1 Score"),
+      Value = c(accuracy, precision, recall, f1_score)
+   )
+   return(metrics)
+}
+
+# Training metrics
+training_metrics <- calculate_metrics(Model.training.confusion)
+print("Training Metrics:")
+print(training_metrics)
+
+# Visualize the confusion matrix
+visualize_confusion_matrix <- function(conf_matrix, title) {
+   cm <- as.data.frame(conf_matrix$table)
+   colnames(cm) <- c("Actual", "Prediction", "Freq")
+   
+   ggplot(cm, aes(x = Prediction, y = Actual)) +
+      geom_tile(aes(fill = Freq), color = "white") +
+      scale_fill_gradient(low = "white", high = "blue") +
+      geom_text(aes(label = Freq), vjust = 1) +
+      ggtitle(title) +
+      theme_minimal()
+}
+
+# Plot confusion matrices
+plot_training_cm <- visualize_confusion_matrix(Model.training.confusion, 
+                                               "Training Set Confusion Matrix")
+plot_testing_cm <- visualize_confusion_matrix(Model.testing.confusion, 
+                                              "Testing Set Confusion Matrix")
+
+print(plot_training_cm)
+print(plot_testing_cm)
+
+# Assignment: We have used SVM, now used the same method and functions for 
+# for evaluation metrics, use the kNN model algorithm and any other model algorithm of choice (criteria - ability to be used on Classification task and the dataset).
+# Mode of Submission - Create a new model_nameofyourmodelalgorithm.R file and build there for each model algorithm.
+# To be submitted on Monday!!
+
 
 # Feature importance
 Importance <- varImp(Model)
